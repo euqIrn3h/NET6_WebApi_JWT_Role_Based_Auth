@@ -5,6 +5,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
+using JwtAuth.Helpers.Business;
 
 namespace JwtAuth.Controllers
 {
@@ -48,12 +49,30 @@ namespace JwtAuth.Controllers
             };
         }
 
+        [HttpGet("secretAdmin"), Authorize(Roles = "Admin")]
+        public async Task<List<string>> SecretAdmin(){
+            return new List<string>{
+                string.Empty,
+                string.Empty
+            };
+        }
+
         private string CreateToken(User user){
 
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, User.UserName)
+                new Claim(ClaimTypes.Name, User.UserName),
+                new Claim(ClaimTypes.Role, Convert.ToString(RolesEnum.Admin))
             };
+
+            /*
+            Setting to role User which is unauthorize
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, User.UserName),
+                new Claim(ClaimTypes.Role, Convert.ToString(RolesEnum.User))
+            };
+            */
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes( _configuration.GetSection("AppSettings:Token").Value));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
