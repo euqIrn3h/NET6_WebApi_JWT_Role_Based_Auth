@@ -65,3 +65,9 @@ C:\Users\henri\OneDrive\Documentos\Programas\.NET\WebApis\NET6_WebApi_JWT_Role_B
 C:\Users\henri\OneDrive\Documentos\Programas\.NET\WebApis\NET6_WebApi_JWT_Role_Based_Auth\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\henri\OneDrive\Documentos\Programas\.NET\WebApis\NET6_WebApi_JWT_Role_Based_Auth\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
 C:\Users\henri\OneDrive\Documentos\Programas\.NET\WebApis\NET6_WebApi_JWT_Role_Based_Auth\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\henri\OneDrive\Documentos\Programas\.NET\WebApis\NET6_WebApi_JWT_Role_Based_Auth\bin\Debug\net6.0\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\henri\OneDrive\Documentos\Programas\.NET\WebApis\NET6_WebApi_JWT_Role_Based_Auth\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\henri\OneDrive\Documentos\Programas\.NET\WebApis\NET6_WebApi_JWT_Role_Based_Auth\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\henri\OneDrive\Documentos\Programas\.NET\WebApis\NET6_WebApi_JWT_Role_Based_Auth\bin\Debug\net6.0\Scrutor.dll
+C:\Users\henri\OneDrive\Documentos\Programas\.NET\WebApis\NET6_WebApi_JWT_Role_Based_Auth\bin\Debug\net6.0\Swashbuckle.AspNetCore.Annotations.dll
+C:\Users\henri\OneDrive\Documentos\Programas\.NET\WebApis\NET6_WebApi_JWT_Role_Based_Auth\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
