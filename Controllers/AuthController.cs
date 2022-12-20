@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace JwtAuth.Controllers
 {
@@ -38,6 +38,14 @@ namespace JwtAuth.Controllers
                 return BadRequest("Username or Password Invalid!");
 
             return Ok( CreateToken(User));
+        }
+
+        [HttpGet("secret"), Authorize]
+        public async Task<List<string>> Secret(){
+            return new List<string>{
+                string.Empty,
+                string.Empty
+            };
         }
 
         private string CreateToken(User user){
