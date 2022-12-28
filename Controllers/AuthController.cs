@@ -14,6 +14,7 @@ namespace JwtAuth.Controllers
     public class AuthController : ControllerBase
     {
         public static User User = new User();
+        public static int Id = 0;
         private readonly IConfiguration _configuration;
         public AuthController(IConfiguration configuration)
         {
@@ -21,58 +22,50 @@ namespace JwtAuth.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(UserRegister user)
+        public async Task<ActionResult> Register(UserCreate user)
         {
             CreatePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
+            User.Id = Id++;
             User.UserName = user.UserName;
+            User.Role = (int)RolesEnum.User;
             User.PasswordHash = passwordHash;
             User.PasswordSalt = passwordSalt;
 
-            return Ok(User);
+            return Ok();
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(UserRegister user)
+        public async Task<ActionResult<Object>> Login(UserCreate user)
         {
             if(!String.Equals(User.UserName, user.UserName) || !VerifyPasswordHash(user.Password, User.PasswordHash, User.PasswordSalt))
                 return BadRequest("Username or Password Invalid!");
 
-            return Ok( CreateToken(User));
+            return Ok( new { Id = User.Id, Token = CreateToken(User)});
         }
 
         [HttpGet("secret"), Authorize]
-        public async Task<List<string>> Secret(){
-            return new List<string>{
-                string.Empty,
-                string.Empty
-            };
+        public async Task<string> Secret(){
+            return "Secret User";
         }
 
         [HttpGet("secretAdmin"), Authorize(Roles = "Admin")]
-        public async Task<List<string>> SecretAdmin(){
-            return new List<string>{
-                string.Empty,
-                string.Empty
-            };
+        public async Task<string> SecretAdmin(){
+            return "Secret Admin";
         }
 
         private string CreateToken(User user){
 
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, User.UserName),
-                new Claim(ClaimTypes.Role, Convert.ToString(RolesEnum.Admin))
+                //Auth Claims
+                new Claim(ClaimTypes.Role, Convert.ToString(Enum.GetName(typeof(RolesEnum), User.Role))),
+                new Claim(ClaimTypes.Role, "Admin"),
+                //Check App Claims
+                new Claim("Id", Convert.ToString(User.Id)),
+                new Claim("Role", Convert.ToString(Enum.GetName(typeof(RolesEnum), User.Role))),
+                new Claim("Role", "Admin")
             };
-
-            /*
-            Setting to role User which is unauthorize
-            List<Claim> claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, User.UserName),
-                new Claim(ClaimTypes.Role, Convert.ToString(RolesEnum.User))
-            };
-            */
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes( _configuration.GetSection("AppSettings:Token").Value));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
