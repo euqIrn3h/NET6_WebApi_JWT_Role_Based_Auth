@@ -1,4 +1,4 @@
-namespace NET6_WebApi_JWT_Role_Based_Auth.Models
+namespace JwtAuth.Models
 {
     public class UserRead
     {

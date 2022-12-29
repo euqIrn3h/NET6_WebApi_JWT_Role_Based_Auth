@@ -28,15 +28,14 @@ namespace JwtAuth.Controllers
 
             User.Id = Id++;
             User.UserName = user.UserName;
-            User.Role = (int)RolesEnum.User;
+            User.Role = (int)Enum.Parse(typeof(RolesEnum), user.Role);
             User.PasswordHash = passwordHash;
             User.PasswordSalt = passwordSalt;
-
-            return Ok();
+            return Ok(user);
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<Object>> Login(UserCreate user)
+        public async Task<ActionResult<Object>> Login(UserLogin user)
         {
             if(!String.Equals(User.UserName, user.UserName) || !VerifyPasswordHash(user.Password, User.PasswordHash, User.PasswordSalt))
                 return BadRequest("Username or Password Invalid!");
@@ -59,12 +58,10 @@ namespace JwtAuth.Controllers
             List<Claim> claims = new List<Claim>
             {
                 //Auth Claims
-                new Claim(ClaimTypes.Role, Convert.ToString(Enum.GetName(typeof(RolesEnum), User.Role))),
-                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim(ClaimTypes.Role, Convert.ToString(Enum.GetName(typeof(RolesEnum), User.Role))),        
                 //Check App Claims
                 new Claim("Id", Convert.ToString(User.Id)),
-                new Claim("Role", Convert.ToString(Enum.GetName(typeof(RolesEnum), User.Role))),
-                new Claim("Role", "Admin")
+                new Claim("Role", Convert.ToString(Enum.GetName(typeof(RolesEnum), User.Role)))
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes( _configuration.GetSection("AppSettings:Token").Value));
