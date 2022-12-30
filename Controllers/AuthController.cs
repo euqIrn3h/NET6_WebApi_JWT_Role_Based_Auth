@@ -44,13 +44,13 @@ namespace JwtAuth.Controllers
         }
 
         [HttpGet("secret"), Authorize]
-        public async Task<string> Secret(){
-            return "Secret User";
+        public async Task<IActionResult> Secret(){
+            return Ok(new List<string>{"Secret User"});
         }
 
         [HttpGet("secretAdmin"), Authorize(Roles = "Admin")]
-        public async Task<string> SecretAdmin(){
-            return "Secret Admin";
+        public async Task<IActionResult> SecretAdmin(){
+            return Ok(new List<string>{"Secret Admin"});
         }
 
         private string CreateToken(User user){
